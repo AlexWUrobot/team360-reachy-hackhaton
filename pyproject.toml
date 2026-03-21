@@ -1,0 +1,13 @@
+[project]
+authors = [{name = "Theo", email = "130441797+theguega@users.noreply.github.com"}]
+dependencies = [
+    "google-genai>=1.68.0",
+    "opencv-python>=4.13.0.92",
+    "reachy-mini>=1.4.0",
+]
+name = "team360-reachy"
+requires-python = ">= 3.12"
+version = "0.1.0"
+
+[tool.uv]
+required-environments = ["sys_platform == 'darwin'"]
