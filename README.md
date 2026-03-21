@@ -17,3 +17,4 @@ https://github.com/pollen-robotics/reachy-mini-desktop-app
 ---------------------------------------------
 cd reachy-mini-desktop-app/
 yarn tauri:dev
+---------------------------------------------
