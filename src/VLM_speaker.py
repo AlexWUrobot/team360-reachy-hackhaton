@@ -2,6 +2,7 @@ import argparse
 import os
 import socket
 import time
+from datetime import datetime
 from pathlib import Path
 
 import cv2
@@ -116,6 +117,19 @@ def _grab_one_frame_bgr(cap: cv2.VideoCapture, warmup_frames: int = 5) -> np.nda
         time.sleep(0.05)
 
     raise RuntimeError("Failed to grab a frame from Reachy camera")
+
+
+def _save_frame_with_timestamp(frame_bgr: np.ndarray) -> Path:
+    out_dir = Path(os.getenv("REACHY_CAPTURE_DIR", "").strip() or (Path(__file__).resolve().parent / "captures"))
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]  # milliseconds
+    out_path = out_dir / f"reachy_{ts}.jpg"
+
+    ok = cv2.imwrite(str(out_path), frame_bgr)
+    if not ok:
+        raise RuntimeError(f"Failed to write image to: {out_path}")
+    return out_path
 
 
 def _has_accelerate() -> bool:
@@ -287,6 +301,9 @@ def main() -> None:
         frame_bgr = _grab_one_frame_bgr(cap)
     finally:
         cap.release()
+
+    saved_path = _save_frame_with_timestamp(frame_bgr)
+    print(f"Saved image: {saved_path}")
 
     rgb = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB)
     pil = Image.fromarray(rgb)

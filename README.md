@@ -27,3 +27,12 @@ yarn tauri:dev
 check volume
 
 curl -s http://127.0.0.1:8000/api/volume/current
+
+
+
+--------------------------------------------
+
+
+VLM to speak
+
+python3 VLM_speaker.py --no-device-map
